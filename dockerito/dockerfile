@@ -1,0 +1,13 @@
+FROM apache/spark-py:latest
+WORKDIR /app
+COPY . .
+
+# Install core dependencies.
+USER root
+RUN apt-get update && apt-get install -y libpq-dev build-essential
+
+RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install delta-spark
+RUN apt-get update && apt-get install -y wget
+RUN wget  -P /usr/lib/delta/jars/ "https://repo1.maven.org/maven2/io/delta/delta-core_2.12/1.0.0/delta-core_2.12-1.0.0.jar"
+EXPOSE 8080
